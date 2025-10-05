@@ -8,6 +8,10 @@
         "cute-engineering/ce-targets": {
             "git": "https://github.com/cute-engineering/ce-targets.git",
             "tag": "v0.4.0"
+        },
+        "cute-engineering/ce-libc": {
+            "git": "https://github.com/cute-engineering/ce-libc.git",
+            "tag": "v1.1.0"
         }
     }
 }

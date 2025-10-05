@@ -1,3 +1,4 @@
+from io import BufferedWriter
 from pathlib import Path
 from dataclasses import dataclass
 from typing import Self
@@ -74,24 +75,21 @@ class BootFS:
             entry.offset = offset
             offset += alignUp(len(entry.data), BLOCK)
 
-    def encodeFileData(self) -> bytes:
-        data = b""
+    def encodeFileData(self, out: BufferedWriter) -> None:
         for entry in self.entries:
-            data += entry.data
-            data += b"\0" * (alignUp(len(entry.data), BLOCK) - len(entry.data))
-        return data
+            out.write(entry.data)
+            out.write(b"\0" * (alignUp(len(entry.data), BLOCK) - len(entry.data)))
 
-    def encode(self) -> bytes:
+    def encode(self, out: BufferedWriter) -> None:
         self.computeOffsets()
-        return (
-            self.encodeHeader()
-            + self.encodeDirectory()
-            + b"\0" * (self.fileDataOffset() - self.headerAndDirectorySize())
-            + self.encodeFileData()
-        )
+        out.write(self.encodeHeader())
+        out.write(self.encodeDirectory())
+        out.write(b"\0" * (self.fileDataOffset() - self.headerAndDirectorySize()))
+        self.encodeFileData(out)
 
     def save(self, path: Path) -> None:
-        path.open("wb").write(self.encode())
+        with path.open("wb") as f:
+            self.encode(f)
 
 
 if "__main__" == __name__:

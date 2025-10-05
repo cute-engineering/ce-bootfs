@@ -2,6 +2,11 @@
     "$schema": "https://schemas.cute.engineering/stable/cutekit.manifest.component.v1",
     "id": "ce-bootfs-dump",
     "type": "exe",
+    "enableIf": {
+        "host": [
+            true
+        ]
+    },
     "requires": [
         "ce-bootfs"
     ]

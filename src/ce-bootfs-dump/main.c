@@ -69,7 +69,7 @@ int main(int argc, char** argv) {
     printf("Files:\n");
     for (bootfs_dirent_t* dirent = bootfs_next(&iter); dirent != NULL; dirent = bootfs_next(&iter)) {
         printf("File: %s, Size: %u bytes, Offset: %u\n", dirent->name, dirent->length, dirent->offset);
-        hexdump((uint8_t*)data + dirent->offset, dirent->length);
+        // hexdump((uint8_t*)data + dirent->offset, dirent->length);
         printf("\n");
     }
 
