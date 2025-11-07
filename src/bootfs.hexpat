@@ -1,5 +1,12 @@
-#include <std/mem.pat>
-#include <std/io.pat>
+#pragma endian little
+#pragma magic [F9 3F 6D A5] @ 0x0
+
+import std.mem;
+import std.io;
+
+#ifdef __IMHEX__
+import hex.core;
+#endif
 
 struct Header {
     u32 magic;
@@ -9,7 +16,10 @@ struct Header {
 };
 
 fn formatDirent(auto var) {
-  return std::format("{} ({} bytes)", var.name, var.datalen);
+    #ifdef __IMHEX__
+        hex::core::add_virtual_file(var.name, var.data);
+    #endif
+    return std::format("{} ({} bytes)", var.name, var.datalen);
 };
 
 struct Dirent {
@@ -19,7 +29,7 @@ struct Dirent {
     char name[namelen - 1];
     char nul;
     std::mem::AlignTo<4>;
-    char data[datalen] @ dataoff;
+    u8 data[datalen] @ dataoff;
 } [[format("formatDirent")]];
 
 struct Bootfs {
