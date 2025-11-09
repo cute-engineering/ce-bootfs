@@ -41,7 +41,7 @@ static inline size_t bootfs_align(size_t size, size_t align) {
     return (size + align - 1) & ~(align - 1);
 }
 
-static inline bootfs_iter_t bootfs_iter(bootfs_header_t* header) {
+static inline bootfs_iter_t bootfs_iter(bootfs_header_t const* header) {
     bootfs_dirent_t* begin = (bootfs_dirent_t*)((uint8_t*)header + sizeof(bootfs_header_t));
     bootfs_dirent_t* end = (bootfs_dirent_t*)((uint8_t*)begin + header->dirlen);
     return (bootfs_iter_t){begin, end};
