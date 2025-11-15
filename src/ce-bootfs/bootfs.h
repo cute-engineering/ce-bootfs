@@ -49,7 +49,7 @@ static inline bootfs_iter_t bootfs_iter(bootfs_header_t const* header) {
 
 static inline bootfs_dirent_t* bootfs_next(bootfs_iter_t* iter) {
     if (iter->_begin >= iter->_end) {
-        return NULL;
+        return nullptr;
     }
 
     bootfs_dirent_t* current = iter->_begin;
@@ -73,17 +73,17 @@ static inline bootfs_dirent_t* bootfs_find(bootfs_header_t* header, char const* 
     bootfs_iter_t iter = bootfs_iter(header);
     bootfs_dirent_t* entry;
     while ((entry = bootfs_next(&iter)) != NULL) {
-        if (entry->namelen == namelen && bootfs_memcmp(entry->name, name, namelen) == 0) {
+        if (entry->namelen - 1 == namelen && bootfs_memcmp(entry->name, name, namelen) == 0) {
             return entry;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 static inline bootfs_file_t bootfs_open(bootfs_header_t* header, char const* name, size_t namelen) {
     bootfs_dirent_t* entry = bootfs_find(header, name, namelen);
     if (!entry) {
-        return (bootfs_file_t){NULL, NULL, 0};
+        return (bootfs_file_t){nullptr, nullptr, 0};
     }
     uint8_t* data = (uint8_t*)header + entry->offset;
     return (bootfs_file_t){entry, data, entry->length};

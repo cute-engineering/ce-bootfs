@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    int fd = open(argv[1], O_RDONLY);
+    int fd = open(argv[1], 0);
     if (fd < 0) {
         perror("open");
         return 1;
